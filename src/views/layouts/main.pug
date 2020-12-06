@@ -1,0 +1,19 @@
+doctype html
+html
+    head
+        link(rel="stylesheet", href="/static/css/style.css")
+        title 주식왕
+    body
+        main
+            if !flag
+                form(action=routes.login, method="post" id="loginForm")
+                    input(type="password", name="password", placeholder="Password", required)
+                    input(type="submit", value="Log In")
+            else
+                include ../partials/sideBar
+                .contents
+                    header
+                        span 
+                            a(href=`${routes.edit}`) 추가
+                    block content
+        

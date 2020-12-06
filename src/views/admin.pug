@@ -1,0 +1,16 @@
+extends layouts/main
+
+block content
+    #content
+        div
+            .left-side
+                ul(id="catalystList")
+                    each c in catalyst
+                        li
+                            div(data-catalyst=c.name) #{c.name}
+            div(class="right-side" id="rightSide")
+    script(src="/static/js/main.js")
+
+            
+
+    
