@@ -5,10 +5,10 @@ const CompaniesSchema = new mongoose.Schema({
     type: String,
     required: "Company Name is required",
   },
-  catalyst: [
+  issues: [
     {
       type: mongoose.Schema.Types.String,
-      ref: "Catalyst",
+      ref: "Issues",
     },
   ],
 });

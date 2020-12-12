@@ -10,8 +10,10 @@ import {
   postMainSearchAjax,
 } from "../controllers/admin";
 import { chkAdmin } from "../middleware";
+import { postSearch } from "../controllers/searchController";
 
 const adminRouter = express.Router();
+//adminRouter.get(routes.home, postSearch);
 adminRouter.get(routes.admin, getAdminHome);
 adminRouter.get(routes.logout, getLogout);
 adminRouter.get(routes.edit, getEditAdmin);

@@ -1,5 +1,5 @@
 import { chkAdmin } from "../middleware";
-import Catalyst from "../models/Catalyst";
+import Issues from "../models/Issues";
 import Companies from "../models/Companies";
 import routes from "../routes";
 
@@ -8,11 +8,11 @@ export const getAdminHome = async (req, res) => {
     session: { flag },
   } = req;
   try {
-    const catalyst = await Catalyst.find({});
-    res.render("admin", { flag, catalyst });
+    const issues = await Issues.find({});
+    res.render("admin", { flag, issues });
   } catch (e) {
     console.log(`${e}`);
-    res.render("admin", { catalyst: [] });
+    res.render("admin", { issues: [] });
   }
 };
 
@@ -39,43 +39,50 @@ export const getEditAdmin = (req, res) => {
 
 export const postInput = async (req, res) => {
   const {
-    body: { catalyst, name },
+    body: { issue, name },
   } = req;
 
-  const companiesName = name.split(" ");
+  const companyName = name.split(" ");
 
   try {
-    let dbCatalyst = await Catalyst.findOne({ name: catalyst });
-    if (dbCatalyst === null) {
+    let qryIssue = await Issues.findOne({ name: issue });
+    if (qryIssue === null) {
       // 재료가 없을 때 생성
-      const cayalystName = await Catalyst.create({
-        name: catalyst,
+      const issueName = await Issues.create({
+        name: issue,
       });
     }
-    dbCatalyst = await Catalyst.findOne({ name: catalyst });
+    qryIssue = await Issues.findOne({ name: issue });
+    const arrCompany = qryIssue.companies;
     // 재료가 있을 때
-    for (let i = 0; i < companiesName.length; i++) {
-      if (companiesName[i] !== "" && companiesName[i] !== undefined) {
-        // 회사명이 빈값이 아니면
-        let dbCompany = await Companies.findOne({ name: companiesName[i] });
-        if (dbCompany === null) {
-          // 회사명이 등록 안되어 있을 때
+    for (let i = 0; i < companyName.length; i++) {
+      console.log(`${i}: ${companyName[i]}`);
+      if (companyName[i] !== "" && companyName[i] !== undefined) {
+        let qryCompany = await Companies.findOne({ name: companyName[i] });
+        console.log(`${i}: ${qryCompany}`);
+        if (qryCompany === null) {
+          // 회사가 등록 안되어 있을 때
           const company = await Companies.create({
-            name: companiesName[i],
-          }); // 회사명 생성
-          dbCompany = await Companies.findOne({ name: companiesName[i] });
-        } else if (dbCompany !== null) {
-          const chkDuplicate = await Companies.findOne({
-            catalyst: dbCatalyst.id,
-          });
-          if (chkDuplicate !== null) {
-            continue;
-          }
+            name: companyName[i],
+          }); // 회사 생성
+          qryCompany = await Companies.findOne({ name: companyName[i] });
+          console.log(`${i}: ${qryCompany}`);
         }
-        await dbCompany.catalyst.push(dbCatalyst.name); // 재료 추가
-        await dbCompany.save();
-        await dbCatalyst.items.push(dbCompany.name); // 회사명 추가
-        await dbCatalyst.save();
+        const arrIssues = qryCompany.issues;
+        console.log(`${i}: ${arrIssues}`);
+        // 회사 issues에 재료 있음 continue
+        //재료 companies에 회사 있음 continue
+        if (
+          arrIssues.indexOf(issue) !== -1 &&
+          arrCompany.indexOf(qryCompany.name) !== -1
+        ) {
+          continue;
+        }
+
+        await qryCompany.issues.push(qryIssue.name); // 재료 추가
+        await qryCompany.save();
+        await qryIssue.companies.push(qryCompany.name); // 회사명 추가
+        await qryIssue.save();
       }
     }
   } catch (e) {
@@ -87,18 +94,18 @@ export const postInput = async (req, res) => {
 // 메인에서 재료 눌렀을 때 ajax
 export const postMainSearchAjax = async (req, res) => {
   const {
-    body: { catalyst },
+    body: { issue },
     session: { flag },
   } = req;
-  console.log(catalyst);
+  console.log(`검색회사: ${issue}`);
   if (flag) {
     try {
-      const companies = await Catalyst.findOne({
-        name: catalyst,
+      const companyList = await Issues.findOne({
+        name: issue,
       });
-      res.send(JSON.stringify(companies.items));
+      res.send(JSON.stringify(companyList.companies));
     } catch (e) {
-      console.log(`Error after click catalyst: ${e}`);
+      console.log(`Error after click issues: ${e}`);
     }
   } else {
     res.redirect(routes.admin);
@@ -113,23 +120,38 @@ export const postDelAjax = async (req, res) => {
   } = req;
   if (flag) {
     try {
-      const query = name.split(",");
+      const query = name.split(","); // 회사 이름, 재료
       // 재료에서 배열 찾아서 빼고 다시 넣기
-      const catalyst = await Catalyst.findOne({ name: query[1] });
 
-      const arrCompany = catalyst.items;
-      arrCompany.splice(arrCompany.indexOf(query[0]), 1);
+      const qryIssue = await Issues.findOne({ name: query[1].trim() });
+      console.log(`qryIssue: ${qryIssue}`);
+      let arrCompany = await qryIssue.companies; // 재료 관련된 회사
+      console.log(`arrCompany: ${arrCompany}`);
+      if (arrCompany.length <= 1 || arrCompany === undefined) {
+        // 재료가 1개이하 일 때
+        arrCompany = [];
+      } else {
+        arrCompany.splice(arrCompany.indexOf(query[0]), 1); // 삭제
+      }
 
-      // 회사명 추가
-      await Catalyst.findOneAndUpdate(
-        { _id: catalyst.id },
-        { items: arrCompany }
-      );
-      await catalyst.save();
+      await Issues.updateOne({ _id: qryIssue.id }, { companies: arrCompany });
+
+      // 회사 document에서 재료 빼기
+      const qryCompany = await Companies.findOne({ name: query[0].trim() });
+      console.log(`qryCompany: ${qryCompany}`);
+      let arrIssue = await qryCompany.issues; // 재료 관련된 회사
+      console.log(`arrIssue: ${arrIssue}`);
+      if (arrIssue.length <= 1 || arrIssue === undefined) {
+        arrIssue = [];
+      } else {
+        arrIssue.splice(arrIssue.indexOf(query[1]), 1); // 삭제
+      }
+
+      await Companies.updateOne({ _id: qryCompany.id }, { issues: arrIssue });
 
       res.send(JSON.stringify("success"));
     } catch (e) {
-      console.log(`Error after click catalyst: ${e}`);
+      console.log(`Error update issues&company: ${e}`);
       res.send(JSON.stringify("error"));
     }
   } else {

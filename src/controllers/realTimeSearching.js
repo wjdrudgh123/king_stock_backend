@@ -51,10 +51,23 @@ const naverSearch = async () => {
       naver.push(companyName);
     }
     console.log(naver);
-    await RealTime.create({
+
+    const qryNaver = await RealTime.findOne({
       site: "naver",
-      companies: naver,
     });
+    if (qryNaver === null) {
+      await RealTime.create({
+        site: "naver",
+        companies: naver,
+      });
+    } else {
+      await RealTime.update(
+        {
+          site: "naver",
+        },
+        { companies: naver }
+      );
+    }
     console.log("END NAVER REAL TIME SEARCHING");
   } catch (e) {
     console.log(`Error for Searching RealTime Naver: ${e}`);
@@ -86,10 +99,18 @@ const daumSearch = async () => {
 
       daum.push(companyName[1]);
     }
-    await RealTime.create({
+
+    const qryDaum = await RealTime.findOne({
       site: "daum",
-      companies: daum,
     });
+    if (qryDaum === null) {
+      await RealTime.create({
+        site: "daum",
+        companies: daum,
+      });
+    } else {
+      await RealTime.update({ site: "daum" }, { companies: daum });
+    }
     console.log("END DAUM REAL TIME SEARCHING");
   } catch (e) {
     console.log(`Error for Searching RealTime Daum: ${e}`);

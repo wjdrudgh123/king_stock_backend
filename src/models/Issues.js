@@ -1,11 +1,11 @@
 import mongoose from "mongoose";
 
-const CatalystSchema = new mongoose.Schema({
+const IssuesSchema = new mongoose.Schema({
   name: {
     type: String,
     required: "Company Name is required",
   },
-  items: [
+  companies: [
     {
       type: mongoose.Schema.Types.String,
       ref: "Companies",
@@ -13,6 +13,6 @@ const CatalystSchema = new mongoose.Schema({
   ],
 });
 
-const model = mongoose.model("Catalyst", CatalystSchema);
+const model = mongoose.model("Issue", IssuesSchema);
 
 export default model;

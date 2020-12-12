@@ -4,10 +4,10 @@ block content
     #content
         div
             .left-side
-                ul(id="catalystList")
-                    each c in catalyst
+                ul(id="issueList")
+                    each issue in issues
                         li
-                            div(data-catalyst=c.name) #{c.name}
+                            div(data-issue=issue.name) #{issue.name}
             div(class="right-side" id="rightSide")
     script(src="/static/js/main.js")
 

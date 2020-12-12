@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import "./src/models/Companies";
-import "./src/models/Catalyst";
+import "./src/models/Issues";
 
 mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true,
