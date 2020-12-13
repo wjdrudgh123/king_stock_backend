@@ -14,7 +14,8 @@
     "prestart": "npm run build",
     "pro:status": "pm2 list",
     "pro:stop": "pm2 stop stock",
-    "pro:logs": "pm2 logs stock"
+    "pro:logs": "pm2 logs stock",
+    "pro:delete":"pm2 delete stock"
   },
   "dependencies": {
     "@babel/cli": "^7.12.8",
