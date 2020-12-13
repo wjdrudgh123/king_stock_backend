@@ -1,3 +1,4 @@
+import cors from "cors";
 import "./dotenv";
 import express from "express";
 import helmet from "helmet";
@@ -19,6 +20,12 @@ app.use("/static", express.static(path.join(__dirname, "static")));
 
 app.use(helmet());
 app.use(morgan("dev"));
+const corsOptions = {
+  origin: ["http://localhost:3000", "https://recomstock.netlify.app"],
+  credentials: true,
+};
+
+app.use(cors(corsOptions));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(
