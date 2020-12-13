@@ -59,17 +59,15 @@ export const postInput = async (req, res) => {
       console.log(`${i}: ${companyName[i]}`);
       if (companyName[i] !== "" && companyName[i] !== undefined) {
         let qryCompany = await Companies.findOne({ name: companyName[i] });
-        console.log(`${i}: ${qryCompany}`);
+
         if (qryCompany === null) {
           // 회사가 등록 안되어 있을 때
           const company = await Companies.create({
             name: companyName[i],
           }); // 회사 생성
           qryCompany = await Companies.findOne({ name: companyName[i] });
-          console.log(`${i}: ${qryCompany}`);
         }
         const arrIssues = qryCompany.issues;
-        console.log(`${i}: ${arrIssues}`);
         // 회사 issues에 재료 있음 continue
         //재료 companies에 회사 있음 continue
         if (
@@ -97,7 +95,6 @@ export const postMainSearchAjax = async (req, res) => {
     body: { issue },
     session: { flag },
   } = req;
-  console.log(`검색회사: ${issue}`);
   if (flag) {
     try {
       const companyList = await Issues.findOne({
@@ -124,9 +121,7 @@ export const postDelAjax = async (req, res) => {
       // 재료에서 배열 찾아서 빼고 다시 넣기
 
       const qryIssue = await Issues.findOne({ name: query[1].trim() });
-      console.log(`qryIssue: ${qryIssue}`);
       let arrCompany = await qryIssue.companies; // 재료 관련된 회사
-      console.log(`arrCompany: ${arrCompany}`);
       if (arrCompany.length <= 1 || arrCompany === undefined) {
         // 재료가 1개이하 일 때
         arrCompany = [];
@@ -138,9 +133,7 @@ export const postDelAjax = async (req, res) => {
 
       // 회사 document에서 재료 빼기
       const qryCompany = await Companies.findOne({ name: query[0].trim() });
-      console.log(`qryCompany: ${qryCompany}`);
       let arrIssue = await qryCompany.issues; // 재료 관련된 회사
-      console.log(`arrIssue: ${arrIssue}`);
       if (arrIssue.length <= 1 || arrIssue === undefined) {
         arrIssue = [];
       } else {

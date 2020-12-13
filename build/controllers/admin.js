@@ -1,9 +1,15 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.getLogout = exports.postDelAjax = exports.postMainSearchAjax = exports.postInput = exports.getEditAdmin = exports.postAdminLogin = exports.getAdminHome = void 0;
+
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
+var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
 
 var _middleware = require("../middleware");
 
@@ -13,16 +19,10 @@ var _Companies = _interopRequireDefault(require("../models/Companies"));
 
 var _routes = _interopRequireDefault(require("../routes"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
 var getAdminHome = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(req, res) {
+  var _ref = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(req, res) {
     var flag, issues;
-    return regeneratorRuntime.wrap(function _callee$(_context) {
+    return _regenerator["default"].wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
@@ -91,10 +91,10 @@ var getEditAdmin = function getEditAdmin(req, res) {
 exports.getEditAdmin = getEditAdmin;
 
 var postInput = /*#__PURE__*/function () {
-  var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(req, res) {
+  var _ref2 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(req, res) {
     var _req$body, issue, name, companyName, qryIssue, issueName, arrCompany, i, qryCompany, company, arrIssues;
 
-    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+    return _regenerator["default"].wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
@@ -136,14 +136,14 @@ var postInput = /*#__PURE__*/function () {
 
           case 15:
             if (!(i < companyName.length)) {
-              _context2.next = 45;
+              _context2.next = 42;
               break;
             }
 
             console.log("".concat(i, ": ").concat(companyName[i]));
 
             if (!(companyName[i] !== "" && companyName[i] !== undefined)) {
-              _context2.next = 42;
+              _context2.next = 39;
               break;
             }
 
@@ -154,80 +154,77 @@ var postInput = /*#__PURE__*/function () {
 
           case 20:
             qryCompany = _context2.sent;
-            console.log("".concat(i, ": ").concat(qryCompany));
 
             if (!(qryCompany === null)) {
-              _context2.next = 30;
+              _context2.next = 28;
               break;
             }
 
-            _context2.next = 25;
+            _context2.next = 24;
             return _Companies["default"].create({
               name: companyName[i]
             });
 
-          case 25:
+          case 24:
             company = _context2.sent;
-            _context2.next = 28;
+            _context2.next = 27;
             return _Companies["default"].findOne({
               name: companyName[i]
             });
 
-          case 28:
+          case 27:
             qryCompany = _context2.sent;
-            console.log("".concat(i, ": ").concat(qryCompany));
 
-          case 30:
-            arrIssues = qryCompany.issues;
-            console.log("".concat(i, ": ").concat(arrIssues)); // 회사 issues에 재료 있음 continue
+          case 28:
+            arrIssues = qryCompany.issues; // 회사 issues에 재료 있음 continue
             //재료 companies에 회사 있음 continue
 
             if (!(arrIssues.indexOf(issue) !== -1 && arrCompany.indexOf(qryCompany.name) !== -1)) {
-              _context2.next = 34;
+              _context2.next = 31;
               break;
             }
 
-            return _context2.abrupt("continue", 42);
+            return _context2.abrupt("continue", 39);
 
-          case 34:
-            _context2.next = 36;
+          case 31:
+            _context2.next = 33;
             return qryCompany.issues.push(qryIssue.name);
 
-          case 36:
-            _context2.next = 38;
+          case 33:
+            _context2.next = 35;
             return qryCompany.save();
 
-          case 38:
-            _context2.next = 40;
+          case 35:
+            _context2.next = 37;
             return qryIssue.companies.push(qryCompany.name);
 
-          case 40:
-            _context2.next = 42;
+          case 37:
+            _context2.next = 39;
             return qryIssue.save();
 
-          case 42:
+          case 39:
             i++;
             _context2.next = 15;
             break;
 
-          case 45:
-            _context2.next = 50;
+          case 42:
+            _context2.next = 47;
             break;
 
-          case 47:
-            _context2.prev = 47;
+          case 44:
+            _context2.prev = 44;
             _context2.t0 = _context2["catch"](2);
             console.log("insert \uB3C4\uC911 \uC624\uB958: ".concat(_context2.t0));
 
-          case 50:
+          case 47:
             res.redirect(_routes["default"].admin);
 
-          case 51:
+          case 48:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[2, 47]]);
+    }, _callee2, null, [[2, 44]]);
   }));
 
   return function postInput(_x3, _x4) {
@@ -239,50 +236,49 @@ var postInput = /*#__PURE__*/function () {
 exports.postInput = postInput;
 
 var postMainSearchAjax = /*#__PURE__*/function () {
-  var _ref3 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(req, res) {
+  var _ref3 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee3(req, res) {
     var issue, flag, companyList;
-    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+    return _regenerator["default"].wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
             issue = req.body.issue, flag = req.session.flag;
-            console.log("\uAC80\uC0C9\uD68C\uC0AC: ".concat(issue));
 
             if (!flag) {
-              _context3.next = 15;
+              _context3.next = 14;
               break;
             }
 
-            _context3.prev = 3;
-            _context3.next = 6;
+            _context3.prev = 2;
+            _context3.next = 5;
             return _Issues["default"].findOne({
               name: issue
             });
 
-          case 6:
+          case 5:
             companyList = _context3.sent;
             res.send(JSON.stringify(companyList.companies));
-            _context3.next = 13;
+            _context3.next = 12;
             break;
 
-          case 10:
-            _context3.prev = 10;
-            _context3.t0 = _context3["catch"](3);
+          case 9:
+            _context3.prev = 9;
+            _context3.t0 = _context3["catch"](2);
             console.log("Error after click issues: ".concat(_context3.t0));
 
-          case 13:
-            _context3.next = 16;
+          case 12:
+            _context3.next = 15;
             break;
 
-          case 15:
+          case 14:
             res.redirect(_routes["default"].admin);
 
-          case 16:
+          case 15:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[3, 10]]);
+    }, _callee3, null, [[2, 9]]);
   }));
 
   return function postMainSearchAjax(_x5, _x6) {
@@ -294,16 +290,16 @@ var postMainSearchAjax = /*#__PURE__*/function () {
 exports.postMainSearchAjax = postMainSearchAjax;
 
 var postDelAjax = /*#__PURE__*/function () {
-  var _ref4 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4(req, res) {
+  var _ref4 = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee4(req, res) {
     var name, flag, query, qryIssue, arrCompany, qryCompany, arrIssue;
-    return regeneratorRuntime.wrap(function _callee4$(_context4) {
+    return _regenerator["default"].wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
             name = req.body.name, flag = req.session.flag;
 
             if (!flag) {
-              _context4.next = 35;
+              _context4.next = 31;
               break;
             }
 
@@ -318,15 +314,13 @@ var postDelAjax = /*#__PURE__*/function () {
 
           case 6:
             qryIssue = _context4.sent;
-            console.log("qryIssue: ".concat(qryIssue));
-            _context4.next = 10;
+            _context4.next = 9;
             return qryIssue.companies;
 
-          case 10:
+          case 9:
             arrCompany = _context4.sent;
-            // 재료 관련된 회사
-            console.log("arrCompany: ".concat(arrCompany));
 
+            // 재료 관련된 회사
             if (arrCompany.length <= 1 || arrCompany === undefined) {
               // 재료가 1개이하 일 때
               arrCompany = [];
@@ -334,67 +328,65 @@ var postDelAjax = /*#__PURE__*/function () {
               arrCompany.splice(arrCompany.indexOf(query[0]), 1); // 삭제
             }
 
-            _context4.next = 15;
+            _context4.next = 13;
             return _Issues["default"].updateOne({
               _id: qryIssue.id
             }, {
               companies: arrCompany
             });
 
-          case 15:
-            _context4.next = 17;
+          case 13:
+            _context4.next = 15;
             return _Companies["default"].findOne({
               name: query[0].trim()
             });
 
-          case 17:
+          case 15:
             qryCompany = _context4.sent;
-            console.log("qryCompany: ".concat(qryCompany));
-            _context4.next = 21;
+            _context4.next = 18;
             return qryCompany.issues;
 
-          case 21:
+          case 18:
             arrIssue = _context4.sent;
-            // 재료 관련된 회사
-            console.log("arrIssue: ".concat(arrIssue));
 
+            // 재료 관련된 회사
             if (arrIssue.length <= 1 || arrIssue === undefined) {
               arrIssue = [];
             } else {
               arrIssue.splice(arrIssue.indexOf(query[1]), 1); // 삭제
             }
 
-            _context4.next = 26;
+            _context4.next = 22;
             return _Companies["default"].updateOne({
               _id: qryCompany.id
             }, {
               issues: arrIssue
             });
 
-          case 26:
+          case 22:
             res.send(JSON.stringify("success"));
-            _context4.next = 33;
+            _context4.next = 29;
             break;
 
-          case 29:
-            _context4.prev = 29;
+          case 25:
+            _context4.prev = 25;
             _context4.t0 = _context4["catch"](2);
             console.log("Error update issues&company: ".concat(_context4.t0));
             res.send(JSON.stringify("error"));
 
-          case 33:
-            _context4.next = 36;
+          case 29:
+            _context4.next = 32;
             break;
 
-          case 35:
+          case 31:
             res.redirect(_routes["default"].admin);
 
-          case 36:
+          case 32:
           case "end":
             return _context4.stop();
         }
       }
-    }, _callee4, null, [[2, 29]]);
+    }, _callee4, null, [[2, 25]]);
   }));
 
   return function postDelAjax(_x7, _x8) {

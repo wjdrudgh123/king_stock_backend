@@ -1,5 +1,7 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -14,8 +16,6 @@ var _admin = require("../controllers/admin");
 var _middleware = require("../middleware");
 
 var _searchController = require("../controllers/searchController");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var adminRouter = _express["default"].Router(); //adminRouter.get(routes.home, postSearch);
 

@@ -1,4 +1,4 @@
-import "../dotenv";
+import "./dotenv";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";

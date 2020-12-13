@@ -1,13 +1,13 @@
 "use strict";
 
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.chkAdmin = exports.localsMiddleware = void 0;
 
 var _routes = _interopRequireDefault(require("./routes"));
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var localsMiddleware = function localsMiddleware(req, res, next) {
   res.locals.routes = _routes["default"];
